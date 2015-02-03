@@ -7,7 +7,7 @@ import net.alphaatom.wirebot.WireBot;
 
 public class Slowmode extends Command {
 	
-	private String[] aliases = { "slowmode", "sm", "slow" };
+	private String[] aliases = { "slowmode", "sm", "slow", "slowdown" };
 
 	@Override
 	public void exec(String[] cmdinfo, String[] args, WireBot wireBot) {
