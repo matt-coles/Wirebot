@@ -3,5 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/Users/Matt/Downloads/pircbot-1.5.0/pircbot-1.5.0/pircbot.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Matt/Downloads/snakeyaml-1.14.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

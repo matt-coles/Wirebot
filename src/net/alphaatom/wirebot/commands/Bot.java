@@ -5,7 +5,7 @@ import net.alphaatom.wirebot.WireBot;
 
 public class Bot extends Command {
 
-	private String[] aliases = { "wirebot", "bot", "info" };
+	private String[] aliases = { "wirebot", "bot", "info", "inf", "who" };
 	
 	/*
 	 * (non-Javadoc)
