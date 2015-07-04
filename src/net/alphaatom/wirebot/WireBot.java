@@ -2,14 +2,16 @@ package net.alphaatom.wirebot;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.jibble.pircbot.PircBot;
 import org.jibble.pircbot.User;
 
 public class WireBot extends PircBot {
 	
-	protected final static String password = "oauth:3fjpl3rg7qcd66rhb0itna60k98alb";
+	protected final static String password = "oauth:5uu4jdazasnz57xh35spcmrkq5joxq";
 	protected HashMap<String, ArrayList<String>> bannedWords;
 	private final String prefix = "!";
 	private final CommandHandler commandHandler;
@@ -27,7 +29,7 @@ public class WireBot extends PircBot {
 			try {
 				bannedWords = (HashMap<String, ArrayList<String>>) SLAPI.load("bannedwords.bin");
 			} catch (Exception e) {
-				this.reportBadThing(40);
+				this.reportBadThing(50);
 				e.printStackTrace();
 			}
 		} else {
@@ -37,20 +39,43 @@ public class WireBot extends PircBot {
 	}
 	
 	@Override
-	public void onMessage(String channel, String sender, String login, String hostname, String message) {
-		User user = getUserInChannel(channel, sender);
-		if (!user.isOp()) {
-			for (String s : bannedWords.get(channel.substring(1))) {
-				if (message.contains(s)) {
-					this.sendMessage(channel, ".timeout " + sender + " 5");
-				}
+	public void onUnknown(String line) {
+		Map<String, String> cmdInfo;
+		String lineArray[], userInfoArray[], senderInfoArray[], commandArgs[], twitchCmdType, 
+		       userInfo, sender, channel, message, infoName, infoValue, command;
+		if (line.startsWith("@")) {
+			lineArray = line.split(" ");
+			twitchCmdType = lineArray[2];
+			if (twitchCmdType.equals("ROOMSTATE")) {
+				//ROOMSTATE change?
+			} else if (twitchCmdType.equals("PRIVMSG")) {
+				userInfo = lineArray[0].substring(1);
+				sender = lineArray[1];
+				channel = lineArray[3];
+				message = lineArray[4].substring(1);
+				
+				// Command Handling Begin
+				if (message.startsWith(this.getPrefix())) {
+					cmdInfo = new HashMap<String, String>();
+					userInfoArray = userInfo.split(";");
+					for (String info : userInfoArray) {
+						infoName = info.split("=")[0];
+						infoValue = (info.split("=").length > 1) ? info.split("=")[1] : ""; //empty string if we don't know
+						cmdInfo.put(infoName, infoValue);
+					}
+					senderInfoArray = sender.split("!");
+					cmdInfo.put("senderName", senderInfoArray[0]);
+					cmdInfo.put("senderLogin", senderInfoArray[1].split("@")[0]);
+					cmdInfo.put("senderHost", senderInfoArray[1].split("@")[1]);
+					cmdInfo.put("channel", channel);
+					command = message.split(" ")[0].substring(1);
+					commandArgs = this.joinUpArrayFrom(line.split(" "), 5, ' ').split(" ");
+					commandHandler.processCommand(command, cmdInfo, commandArgs, this);
+				} // Command Handling End
+				
+			} else if (twitchCmdType.equals("USERSTATE")) {
+				//USERSTATE change??
 			}
-		}
-		if (message.startsWith(prefix)) {
-			String messageArray[] = message.split(" ");
-			String commandInformationArray[] = { channel, sender, login, hostname };
-			String commandArgumentArray[] = joinUpArrayFrom(messageArray, 1, ' ').split(" ");
-			commandHandler.processCommand(messageArray[0].substring(1), commandInformationArray, commandArgumentArray, this);
 		}
 	}
 	
@@ -88,9 +113,17 @@ public class WireBot extends PircBot {
 		}
 	}
 	
+	public ArrayList<String> getBannedWords(String channel) {
+		if (bannedWords.containsKey(channel)) {
+			return bannedWords.get(channel);
+		} else {
+			return new ArrayList<String>();
+		}
+	}
+	
 	public User getUserInChannel(String channel, String user) {
 		for (User u : this.getUsers(channel)) {
-			if (u.getNick().equals(user)) {
+			if (u.getNick().equalsIgnoreCase(user)) {
 				return u;
 			}
 		}
@@ -106,6 +139,10 @@ public class WireBot extends PircBot {
 		System.err.println(" bad happened.");
 	}
 	
+	public String getPrefix() {
+		return prefix;
+	}
+
 	public String joinUpArrayFrom(String[] array, int beginIndex, char inbetween) {
 		if (!(array.length >= beginIndex)) {
 			this.reportBadThing(5);

@@ -19,6 +19,15 @@ public class WireBotLauncher {
 		} catch (IrcException e) {
 			e.printStackTrace();
 		}
+		wBot.sendRawLine("CAP REQ :twitch.tv/membership");
+		wBot.sendRawLine("CAP REQ :twitch.tv/commands");
+		wBot.sendRawLine("CAP REQ :twitch.tv/tags");
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		wBot.joinChannel("#alphaatom");
 	}
 
