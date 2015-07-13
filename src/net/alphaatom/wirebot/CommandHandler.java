@@ -22,7 +22,7 @@ public class CommandHandler {
     try {
       classes = getClasses(ClassLoader.getSystemClassLoader(), "net/alphaatom/wirebot/commands");
     } catch (Exception e) {
-      wirebot.reportBadThing(20);
+      wirebot.wireLog("Failed to find command classes. Exiting.", WireBot.ERROR);
       e.printStackTrace();
     }
     for (Class c : classes) {

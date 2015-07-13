@@ -10,6 +10,7 @@ public class WireBotLauncher {
 	public static void main(String[] args) {
 		WireBot wBot = new WireBot();
 		wBot.setVerbose(true);
+		wBot.setLogLevel(WireBot.VERBOSE);
 		try {
 			wBot.connect("irc.twitch.tv", 6667, WireBot.password);
 		} catch (NickAlreadyInUseException e) {
