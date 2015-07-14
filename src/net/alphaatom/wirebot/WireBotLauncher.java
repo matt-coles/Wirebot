@@ -5,12 +5,14 @@ import java.io.IOException;
 import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.NickAlreadyInUseException;
 
+import net.alphaatom.wirebot.logger.Level;
+
 public class WireBotLauncher {
 	
 	public static void main(String[] args) {
 		WireBot wBot = new WireBot();
 		wBot.setVerbose(true);
-		wBot.setLogLevel(WireBot.VERBOSE);
+		wBot.setLogLevel(Level.VERBOSE);
 		try {
 			wBot.connect("irc.twitch.tv", 6667, WireBot.password);
 		} catch (NickAlreadyInUseException e) {

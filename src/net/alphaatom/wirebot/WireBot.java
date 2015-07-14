@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.jibble.pircbot.PircBot;
 
+import net.alphaatom.wirebot.logger.Level;
+
 public class WireBot extends PircBot {
 	
 	public final static int VERBOSE = 0;
@@ -23,7 +25,7 @@ public class WireBot extends PircBot {
 	private final int minor = 0;
 	private final int revision = 0;
 	private final int build = 1;
-	private int logLevel = INFO;
+	private Level logLevel = Level.NORMAL;
 	
 	@SuppressWarnings("unchecked")
 	public WireBot() {
@@ -145,36 +147,12 @@ public class WireBot extends PircBot {
 		}
 	}
 	
-	/**
-	 * Log a message to the stdout or stderr depending on the level you've used.
-	 * Note that using ERROR level will cause the bot to exit with error code 1
-	 * 
-	 * @param message Message to log
-	 * @param level Choose from VERBOSE, DEBUG, INFO, WARNING or ERROR
-	 */
-	public void wireLog(String message, int level) {
-		if (level <= WireBot.INFO) {
-			if (level == WireBot.VERBOSE && logLevel >= WireBot.VERBOSE) {
-				System.out.println(message);
-			} else if (level == WireBot.DEBUG && logLevel >= WireBot.DEBUG) {
-				System.out.println(message);
-			} else {
-				System.out.println(message);
-			}
-		} else {
-			if (level == WireBot.WARNING) {
-				System.err.println("WARNING: " + message);
-			} else if (level == WireBot.ERROR) {
-				System.err.println("ERROR: " + message);
-				System.exit(1);
-			} else {
-				System.err.println(message);
-			}
-		}
-	}
-	
 	public String getPrefix() {
 		return prefix;
+	}
+	
+	public void wireLog(String s, int i) {
+		
 	}
 
 	public String joinUpArrayFrom(String[] array, int beginIndex, char inbetween) {
@@ -190,11 +168,11 @@ public class WireBot extends PircBot {
 		}
 	}
 
-	public int getLogLevel() {
+	public Level getLogLevel() {
 		return logLevel;
 	}
 
-	public void setLogLevel(int logLevel) {
+	public void setLogLevel(Level logLevel) {
 		this.logLevel = logLevel;
 	}
 	
