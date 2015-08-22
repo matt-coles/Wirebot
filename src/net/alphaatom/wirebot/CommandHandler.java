@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import net.alphaatom.wirebot.logger.Level;
+
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class CommandHandler {
 
@@ -22,7 +24,7 @@ public class CommandHandler {
     try {
       classes = getClasses(ClassLoader.getSystemClassLoader(), "net/alphaatom/wirebot/commands");
     } catch (Exception e) {
-      wirebot.wireLog("Failed to find command classes. Exiting.", WireBot.ERROR);
+      wirebot.logger.log(Level.ERROR, "Failed to find command classes.", this.getClass());
       e.printStackTrace();
     }
     for (Class c : classes) {
