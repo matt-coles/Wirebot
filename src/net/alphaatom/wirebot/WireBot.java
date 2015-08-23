@@ -39,6 +39,7 @@ public class WireBot extends PircBot {
 	
 	@SuppressWarnings("unchecked")
 	public WireBot() {
+		logger = new WireLogger();
 		logger.log(Level.INFO, "Starting new WireBot instance.", this.getClass());
 		setName("WireBot");
 		logger.log(Level.BABBLE, "this is version " + major + "." + minor + "." + revision + "#-" + build, this.getClass());
