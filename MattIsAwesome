@@ -1,0 +1,10 @@
+Class MattIsAwesome{
+
+  private void matt(String matt){
+    System.out.println("Matt " + matt + "!");
+  }
+
+  public static void main(String[] args){
+    matt("sucks");
+  }
+}
